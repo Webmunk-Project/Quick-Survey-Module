@@ -1,4 +1,4 @@
-/* global registerCustomExtension, registerMessageHandler */
+/* global registerCustomModule, registerMessageHandler */
 
 const fetchSurvey = function (request, sender, sendResponse) {
   if (request.content === 'fetch_quick_survey') {
@@ -78,7 +78,7 @@ const fetchSurvey = function (request, sender, sendResponse) {
   return false
 }
 
-registerCustomExtension(function (config) {
+registerCustomModule(function (config) {
   console.log('[Quick Survey] Initialized.')
 
   registerMessageHandler('fetch_quick_survey', fetchSurvey)

@@ -91,7 +91,7 @@ if (window.generateHtml === undefined) {
   }
 }
 
-window.registerExtensionCallback(function (config) {
+window.registerModuleCallback(function (config) {
   chrome.runtime.sendMessage({
     content: 'fetch_quick_survey',
     url: window.location.href
