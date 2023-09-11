@@ -1,5 +1,3 @@
-/* global registerCustomModule, registerMessageHandler */
-
 const fetchSurvey = function (request, sender, sendResponse) {
   if (request.content === 'fetch_quick_survey') {
     const payload = [{
@@ -78,8 +76,8 @@ const fetchSurvey = function (request, sender, sendResponse) {
   return false
 }
 
-registerCustomModule(function (config) {
+self.registerCustomModule(function (config) {
   console.log('[Quick Survey] Initialized.')
 
-  registerMessageHandler('fetch_quick_survey', fetchSurvey)
+  self.registerMessageHandler('fetch_quick_survey', fetchSurvey)
 })
