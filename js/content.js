@@ -92,27 +92,33 @@ if (window.generateHtml === undefined) {
 }
 
 window.registerModuleCallback(function (config) {
+  console.log('QS')
+  console.log(config)
+
   chrome.runtime.sendMessage({
     content: 'fetch_quick_survey',
+    config: config,
     url: window.location.href
   }, function (response) {
     console.log('[Quick Survey] Received response:')
     console.log(response)
+    
+    if (response.survey !== undefined && response.survey !== null) {
+		window.setTimeout(function () {
+		  const htmlCode = window.generateHtml(response.survey)
 
-    window.setTimeout(function () {
-      const htmlCode = window.generateHtml(response)
+		  console.log('[Quick Survey] HTML:')
+		  console.log(htmlCode)
 
-      console.log('[Quick Survey] HTML:')
-      console.log(htmlCode)
+		  const wrapper = document.createElement('div')
+		  wrapper.innerHTML = htmlCode
 
-      const wrapper = document.createElement('div')
-      wrapper.innerHTML = htmlCode
+		  document.querySelector('body').appendChild(wrapper.firstChild)
 
-      document.querySelector('body').appendChild(wrapper.firstChild)
+		  const survey = document.getElementById('quick_survey')
 
-      const survey = document.getElementById('quick_survey')
-
-      survey.style.setProperty('display', 'block')
-    }, 2500)
+		  survey.style.setProperty('display', 'block')
+		}, 2500)
+	}
   })
 })

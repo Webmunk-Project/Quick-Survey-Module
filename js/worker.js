@@ -2,80 +2,37 @@
 
 const fetchSurvey = function (request, sender, sendResponse) {
   if (request.content === 'fetch_quick_survey') {
-    const payload = [{
-      key: 'test-multiple',
-      prompt: {
-        en: 'Which numbers below do you like?'
-      },
-      'prompt-type': 'select-multiple',
-      options: [{
-        label: {
-          en: '1'
-        },
-        value: '1'
-      }, {
-        label: {
-          en: '2'
-        },
-        value: '2'
-      }, {
-        label: {
-          en: '3'
-        },
-        value: '3'
-      }, {
-        label: {
-          en: '4'
-        },
-        value: '4'
-      }, {
-        label: {
-          en: '5'
-        },
-        value: '5'
-      }]
-    }, {
-      key: 'test-single',
-      prompt: {
-        en: 'Which color below is your favorite?'
-      },
-      'prompt-type': 'select-one',
-      options: [{
-        label: {
-          en: 'red'
-        },
-        value: 'red'
-      }, {
-        label: {
-          en: 'blue'
-        },
-        value: 'blue'
-      }, {
-        label: {
-          en: 'green'
-        },
-        value: 'green'
-      }]
-    }, {
-      key: 'test-line',
-      prompt: {
-        en: 'Type your favorite word below.'
-      },
-      'prompt-type': 'single-line'
-    }, {
-      key: 'test-line',
-      text: {
-        en: 'This is read-only text. Nothing to do here.'
-      },
-      'prompt-type': 'read-only-text'
-    }]
+    const config = request.config['quick-survey']
+    const pageUrl = "" + request.url
+    
+    console.log('URL: ')
+    console.log(pageUrl)
+    
+    if (config !== undefined && config.enabled === true) {
+		const requireUrls = config['require-urls']
 
-    sendResponse(payload)
+		console.log('requireUrls: ')
+		console.log(requireUrls)
+		
+		for (const pattern in Object.keys(requireUrls)) {
+			console.log('TEST: ' + pageUrl + ' =~ ' + pattern)
 
-    return true
+			if (true || pageUrl.match(pattern)) {
+			   console.log('[Quick Survey] "' + pattern + '" matches "' + pageUrl + '".')
+	   
+			   // TODO - scheduling
+	   
+			   // TODO - cookies 
+	
+				sendResponse({
+					survey: requireUrls[pattern].survey
+				})
+			}
+		}
+    }
+
+    sendResponse({})
   }
-
-  return false
 }
 
 registerCustomModule(function (config) {
